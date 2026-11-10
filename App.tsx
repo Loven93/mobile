@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  SafeAreaView,
   View,
   Text,
   StyleSheet,
@@ -11,11 +10,17 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// ==========================================================
-// DATA STATIS (konstanta biasa, bukan state)
-// Seluruh isi layar berasal dari sini, jadi mudah diganti.
-// ==========================================================
+const PROFIL = {
+  nama: 'Loven Marthin Sine',
+  nim: '220101001', // Sesuaikan dengan NIM Anda
+  prodi: 'Informatika',
+  kampus: 'Universitas PGRI Delta Sidoarjo',
+  status: 'Mahasiswa Aktif',
+  berlaku: 'Ganjil 2026/2027',
+};
+
 const COLORS = {
   teal: '#16343A',     // latar hero dan bilah atas
   paper: '#EEF0F2',    // latar halaman
@@ -34,16 +39,6 @@ const COLORS = {
 
 const SERIF = Platform.select({ ios: 'Georgia', android: 'serif', default: 'serif' });
 const SCREEN_WIDTH = Dimensions.get('window').width;
-
-// Ganti dengan datamu sendiri
-const PROFIL = {
-  nama: 'Marthin',
-  nim: 'Isi NIM kamu',
-  prodi: 'Teknik Informatika',
-  kampus: 'Universitas PGRI Delta Sidoarjo',
-  status: 'Aktif',
-  berlaku: '31 Desember 2026',
-};
 
 // Data contoh untuk keperluan tugas
 const SPINES = [
@@ -99,9 +94,6 @@ const BARCODE = [
   3, 1, 2, 1, 1, 3, 2, 1, 3, 1, 1, 2, 1, 3, 2, 1, 2, 3, 1, 1, 2, 3, 1, 2, 1, 1, 3, 2, 1, 2, 3, 1, 1, 2,
 ];
 
-// ==========================================================
-// KOMPONEN KECIL (menerima props, tanpa state)
-// ==========================================================
 function Page({ children }) {
   return (
     <View style={styles.pageWrap}>
@@ -183,15 +175,12 @@ function LoanRow({ title, sisa, total }) {
   );
 }
 
-// ==========================================================
-// LAYAR 1: BERANDA (hero rak buku dari View)
-// ==========================================================
 function HomeScreen() {
   return (
     <Page>
       <View style={styles.hero}>
         <View style={styles.heroTextBox}>
-          <Text style={styles.heroTitle}>Rak Maya</Text>
+          <Text style={styles.heroTitle}>Marthin Book</Text>
           <Text style={styles.heroDesc}>
             Perpustakaan digital kampus: baca e-book, jurnal, dan skripsi dari mana saja.
           </Text>
@@ -222,9 +211,6 @@ function HomeScreen() {
   );
 }
 
-// ==========================================================
-// LAYAR 2: KOLEKSI (kategori dengan garis warna di sisi kiri)
-// ==========================================================
 function CatalogScreen() {
   return (
     <Page>
@@ -249,9 +235,6 @@ function CatalogScreen() {
   );
 }
 
-// ==========================================================
-// LAYAR 3: RINCIAN BUKU (sampul besar dan daftar definisi)
-// ==========================================================
 function DetailScreen() {
   return (
     <Page>
@@ -291,9 +274,6 @@ function DetailScreen() {
   );
 }
 
-// ==========================================================
-// LAYAR 4: PINJAMAN SAYA (bilah sisa waktu pinjam)
-// ==========================================================
 function LoanScreen() {
   return (
     <Page>
@@ -312,9 +292,6 @@ function LoanScreen() {
   );
 }
 
-// ==========================================================
-// LAYAR 5: KARTU ANGGOTA (kartu identitas dengan barcode)
-// ==========================================================
 function ProfileScreen() {
   return (
     <Page>
@@ -351,33 +328,27 @@ function ProfileScreen() {
   );
 }
 
-// ==========================================================
-// KOMPONEN UTAMA: 5 layar yang bisa digeser ke samping
-// ==========================================================
 export default function App() {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.teal} />
+    <SafeAreaProvider>
+        <StatusBar barStyle="light-content" backgroundColor={COLORS.teal} />
 
-      <View style={styles.topBar}>
-        <Text style={styles.topBarTitle}>Rak Maya</Text>
-        <Text style={styles.topBarHint}>Geser ke samping untuk berpindah layar</Text>
-      </View>
+        <View style={styles.topBar}>
+          <Text style={styles.topBarTitle}>Marthin Book</Text>
+          <Text style={styles.topBarHint}>Geser ke samping untuk berpindah tampilan</Text>
+        </View>
 
-      <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
-        <HomeScreen />
-        <CatalogScreen />
-        <DetailScreen />
-        <LoanScreen />
-        <ProfileScreen />
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
+          <HomeScreen />
+          <CatalogScreen />
+          <DetailScreen />
+          <LoanScreen />
+          <ProfileScreen />
+        </ScrollView>
+    </SafeAreaProvider>
   );
 }
 
-// ==========================================================
-// STYLESHEET
-// ==========================================================
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: COLORS.teal },
 
